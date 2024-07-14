@@ -3,6 +3,6 @@ import { SavingsResolver } from './savings.resolver';
 import { SavingsService } from './savings.service';
 
 @Module({
-  providers: [SavingsResolver, SavingsService]
+  providers: [SavingsResolver, SavingsService],
 })
 export class SavingsModule {}

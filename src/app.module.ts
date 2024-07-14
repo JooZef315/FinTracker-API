@@ -8,9 +8,13 @@ import { BudgetsModule } from './budgets/budgets.module';
 import { SavingsModule } from './savings/savings.module';
 import { ReportsModule } from './reports/reports.module';
 import { DbModule } from './db/db.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     AuthModule,
     UsersModule,
     TransactionsModule,

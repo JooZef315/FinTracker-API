@@ -1,30 +1,32 @@
-export enum UserRolesEnum {
-  OFFICIAL = 'OFFICIAL',
-  ADMIN = 'ADMIN',
+export enum IncomeCategory {
+  SALARY = 'SALARY',
+  SAVINGS = 'SAVINGS',
+  INVESTMENT = 'INVESTMENT',
+  GIFTS = 'GIFTS',
+  OTHER = 'OTHER',
 }
 
-export enum CampaignPurposeEnum {
-  MEDICAL_EXPENSES = 'MEDICAL_EXPENSES',
-  HUMANITARIAN_AID = 'HUMANITARIAN_AID',
-  SOCIAL_JUSTICE_CAUSES = 'SOCIAL_JUSTICE_CAUSES',
-  COMMUNITY_PROJECTS = 'COMMUNITY_PROJECTS',
-  DISASTER_RELIEF = 'DISASTER_RELIEF',
+export enum ExpenseCategory {
+  FOOD = 'FOOD',
+  RENT = 'RENT',
+  UTILITIES = 'UTILITIES',
+  ENTERTAINMENT = 'ENTERTAINMENT',
+  TRANSPORTATION = 'TRANSPORTATION',
+  HEALTHCARE = 'HEALTHCARE',
+  EDUCATION = 'EDUCATION',
+  OTHER = 'OTHER',
 }
 
-export enum CampaignStatusEnum {
-  OPEN = 'OPEN',
-  COMPLETED = 'COMPLETED',
+export enum BudgetStatus {
+  DRAFT = 'DRAFT',
+  IN_LIMIT = 'IN_LIMIT',
+  EXCEEDED = 'EXCEEDED',
+  ARCHIVED = 'ARCHIVED',
 }
 
-export enum DonationStatusEnum {
-  PENDING = 'PENDING',
-  SUCCESSFUL = 'SUCCESSFUL',
+export enum SavingGoalStatus {
+  ACTIVE = 'Active',
+  COMPLETED = 'Completed',
   FAILED = 'FAILED',
-}
-
-export enum AuthRolesEnum {
-  ADMIN = 'ADMIN',
-  VERIFIED = 'VERIFIED',
-  CAMPAIGN_OWNER = 'CAMPAIGN_OWNER',
-  PROFILE_OWNER = 'PROFILE_OWNER',
+  CANCELLED = 'Cancelled',
 }
