@@ -1,0 +1,25 @@
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+  bio: String
+  balance: Float!
+}
+
+type User {
+  id: ID
+  name: String
+  email: String
+  password: String
+  bio: String
+  balance: Float
+}
+
+type Query {
+  # user(id: Int!): User
+  user: User
+}
+
+type Mutation {
+  createUser(newUser: CreateUserInput!): User
+}

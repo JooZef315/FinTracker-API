@@ -11,17 +11,13 @@ import { DbModule } from './db/db.module';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { join } from 'path';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
-      definitions: {
-        path: join(process.cwd(), 'src/common/graphqlDefinitions.ts'),
-        emitTypenameField: true,
-      },
+      includeStacktraceInErrorResponses: false,
     }),
     ConfigModule.forRoot({
       isGlobal: true,

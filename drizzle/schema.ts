@@ -39,7 +39,7 @@ export const budgets = sqliteTable('budgets', {
   status: text('status', {
     enum: [...Object.values(BudgetStatus)] as [string, ...string[]],
   }).default(BudgetStatus.DRAFT),
-  startDate: text('createdAt').default(sql`(CURRENT_TIMESTAMP)`),
+  startDate: text('createdAt').default(sql`(CURRENT_DATE)`),
   endDate: text('endDate')
     .notNull()
     .$defaultFn(() => getNextMonth()),
@@ -88,7 +88,9 @@ export const savingGoals = sqliteTable('savingGoals', {
   status: text('status', {
     enum: [...Object.values(SavingGoalStatus)] as [string, ...string[]],
   }).default(SavingGoalStatus.ACTIVE),
-  endDate: text('endDate').notNull(),
+  endDate: text('endDate')
+    .notNull()
+    .$defaultFn(() => getNextMonth()),
 });
 
 //Drizzle Relations
