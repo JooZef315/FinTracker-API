@@ -1,0 +1,8 @@
+type Ok {
+  name: String
+  age: Int
+}
+
+type Query {
+  ok(name: String!): Ok
+}
