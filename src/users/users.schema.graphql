@@ -6,20 +6,27 @@ input CreateUserInput {
   balance: Float!
 }
 
-type User {
-  id: ID
+input EditUserInput {
   name: String
   email: String
   password: String
   bio: String
-  balance: Float
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  bio: String!
+  balance: Float!
 }
 
 type Query {
-  # user(id: Int!): User
-  user: User
+  user(id: String!): User!
 }
 
 type Mutation {
-  createUser(newUser: CreateUserInput!): User
+  createUser(newUser: CreateUserInput!): User!
+  editUser(id: String!, userData: EditUserInput!): User!
+  deleteUser(id: String!): String!
 }

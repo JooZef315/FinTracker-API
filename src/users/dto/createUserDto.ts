@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Transform } from 'class-transformer';
 import {
-  IsDecimal,
   IsEmail,
   IsNotEmpty,
   IsNumber,
@@ -23,6 +22,7 @@ export class CreateUserDto extends CreateUserInput {
   @IsEmail()
   email: string;
 
+  @Transform(({ value }) => value.trim())
   @IsNotEmpty()
   @IsString()
   @MinLength(4)
