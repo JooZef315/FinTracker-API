@@ -1,0 +1,65 @@
+scalar Date
+
+enum IncomeCategory {
+  SALARY
+  SAVINGS
+  INVESTMENT
+  GIFTS
+  OTHER
+}
+
+enum ExpenseCategory {
+  FOOD
+  RENT
+  UTILITIES
+  ENTERTAINMENT
+  TRANSPORTATION
+  HEALTHCARE
+  EDUCATION
+  OTHER
+}
+
+input AddIncomeInput {
+  amount: Float!
+  source: IncomeCategory!
+}
+
+input AddExpenseInput {
+  amount: Float!
+  category: ExpenseCategory!
+  budgetId: String
+}
+
+type Income {
+  id: ID!
+  userId: String!
+  amount: Float!
+  source: IncomeCategory!
+  balanceAfter: Float!
+  createdAt: Date!
+}
+
+type Expense {
+  id: ID!
+  userId: String!
+  amount: Float!
+  category: ExpenseCategory!
+  budgetId: String
+  balanceAfter: Float!
+  createdAt: Date!
+}
+
+type Query {
+  income(id: String!): [Income!]!
+  expense(
+    id: String!
+    page: Int
+    category: ExpenseCategory
+    before: Date
+  ): [Expense!]!
+}
+
+type Mutation {
+  addIncome(id: String!, newIncome: AddIncomeInput!): Income!
+  addExpense(id: String!, newExpense: AddExpenseInput!): Expense!
+}

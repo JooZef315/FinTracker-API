@@ -17,7 +17,7 @@ type User {
   id: ID!
   name: String!
   email: String!
-  bio: String!
+  bio: String
   balance: Float!
 }
 

@@ -11,6 +11,7 @@ import { DbModule } from './db/db.module';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { DateScalar } from './common/scalars/date.scalar';
 
 @Module({
   imports: [
@@ -30,6 +31,6 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     ReportsModule,
     DbModule,
   ],
-  providers: [AppResolver, AppService],
+  providers: [AppResolver, AppService, DateScalar],
 })
 export class AppModule {}

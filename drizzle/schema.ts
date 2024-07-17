@@ -53,9 +53,10 @@ export const incomes = sqliteTable('incomes', {
     .notNull()
     .references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
   amount: real('amount').notNull(),
-  incomeCategory: text('incomeCategory', {
+  source: text('source', {
     enum: [...Object.values(IncomeCategory)] as [string, ...string[]],
   }).notNull(),
+  balanceAfter: real('balanceAfter').notNull(),
   createdAt: text('createdAt').default(sql`(CURRENT_DATE)`),
 });
 
@@ -67,9 +68,10 @@ export const expenses = sqliteTable('expenses', {
     .notNull()
     .references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
   amount: real('amount').notNull(),
-  expenseCategory: text('expenseCategory', {
+  category: text('category', {
     enum: [...Object.values(ExpenseCategory)] as [string, ...string[]],
   }).notNull(),
+  balanceAfter: real('balanceAfter').notNull(),
   budgetId: text('budgetId').references(() => budgets.id, {
     onDelete: 'set null',
     onUpdate: 'set null',
