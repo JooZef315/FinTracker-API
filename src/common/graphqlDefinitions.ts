@@ -56,9 +56,9 @@ export class EditUserInput {
 export abstract class IQuery {
     abstract ok(): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract income(id: string): Income[] | Promise<Income[]>;
+    abstract income(id: string, page?: Nullable<number>, source?: Nullable<IncomeCategory>, before?: Nullable<Date>, after?: Nullable<Date>): Income[] | Promise<Income[]>;
 
-    abstract expense(id: string, page?: Nullable<number>, category?: Nullable<ExpenseCategory>, before?: Nullable<Date>): Expense[] | Promise<Expense[]>;
+    abstract expense(id: string, page?: Nullable<number>, category?: Nullable<ExpenseCategory>, before?: Nullable<Date>, after?: Nullable<Date>): Expense[] | Promise<Expense[]>;
 
     abstract user(id: string): User | Promise<User>;
 }

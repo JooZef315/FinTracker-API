@@ -10,16 +10,38 @@ import {
 import { userExistsPipe } from 'src/common/pipes/userExists.pipe';
 import { AddIncomeDto } from './dto/addIncomeDto';
 import { AddExpenseDto } from './dto/AddExpenseDto';
-import { ExpenseCategory } from 'src/common/enums';
+import { ExpenseCategory, IncomeCategory } from 'src/common/enums';
 
 @Resolver()
 export class TransactionsResolver {
-  constructor(private readonly transactionsService: TransactionsService) {}
+  private ITEMS_PER_PAGE: number;
+  constructor(private readonly transactionsService: TransactionsService) {
+    this.ITEMS_PER_PAGE = 4;
+  }
 
   @Query('income')
   @UsePipes(userExistsPipe)
-  getIncome(@Args('id', ParseUUIDPipe) id: string) {
-    return this.transactionsService.getIncome(id);
+  getIncome(
+    @Args('id', ParseUUIDPipe) id: string,
+    @Args('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Args(
+      'source',
+      new ParseEnumPipe(IncomeCategory, {
+        optional: true,
+      }),
+    )
+    source: IncomeCategory,
+    @Args('before') before: string,
+    @Args('after') after: string,
+  ) {
+    return this.transactionsService.getIncome(
+      id,
+      this.ITEMS_PER_PAGE,
+      page,
+      source,
+      before,
+      after,
+    );
   }
 
   @Query('expense')
@@ -35,8 +57,16 @@ export class TransactionsResolver {
     )
     category: ExpenseCategory,
     @Args('before') before: string,
+    @Args('after') after: string,
   ) {
-    return this.transactionsService.getExpense(id, page, category, before);
+    return this.transactionsService.getExpense(
+      id,
+      this.ITEMS_PER_PAGE,
+      page,
+      category,
+      before,
+      after,
+    );
   }
 
   @Mutation('addIncome')

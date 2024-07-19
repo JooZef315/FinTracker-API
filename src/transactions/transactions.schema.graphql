@@ -50,12 +50,19 @@ type Expense {
 }
 
 type Query {
-  income(id: String!): [Income!]!
+  income(
+    id: String!
+    page: Int
+    source: IncomeCategory
+    before: Date
+    after: Date
+  ): [Income!]!
   expense(
     id: String!
     page: Int
     category: ExpenseCategory
     before: Date
+    after: Date
   ): [Expense!]!
 }
 
