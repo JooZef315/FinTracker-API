@@ -38,7 +38,7 @@ export class UsersService {
         name: createUserDto.name,
         email: createUserDto.email,
         password: hashPassword,
-        bio: createUserDto.bio || null,
+        bio: createUserDto.bio,
         balance: createUserDto.balance,
       })
       .returning();

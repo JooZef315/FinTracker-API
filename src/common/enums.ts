@@ -23,10 +23,3 @@ export enum BudgetStatus {
   EXCEEDED = 'EXCEEDED',
   ARCHIVED = 'ARCHIVED',
 }
-
-export enum SavingGoalStatus {
-  ACTIVE = 'Active',
-  COMPLETED = 'Completed',
-  FAILED = 'FAILED',
-  CANCELLED = 'Cancelled',
-}

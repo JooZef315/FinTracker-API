@@ -8,6 +8,17 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum BudgetStatus {
+    DRAFT = "DRAFT",
+    IN_LIMIT = "IN_LIMIT",
+    EXCEEDED = "EXCEEDED",
+    ARCHIVED = "ARCHIVED"
+}
+
+export enum ArchivedStatus {
+    ARCHIVED = "ARCHIVED"
+}
+
 export enum IncomeCategory {
     SALARY = "SALARY",
     SAVINGS = "SAVINGS",
@@ -25,6 +36,22 @@ export enum ExpenseCategory {
     HEALTHCARE = "HEALTHCARE",
     EDUCATION = "EDUCATION",
     OTHER = "OTHER"
+}
+
+export class CreateBudgetInput {
+    limit: number;
+    budgetCategory: ExpenseCategory;
+    description?: Nullable<string>;
+    startDate?: Nullable<Date>;
+    endDate?: Nullable<Date>;
+}
+
+export class EditBudgetInput {
+    limit?: Nullable<number>;
+    status?: Nullable<ArchivedStatus>;
+    description?: Nullable<string>;
+    startDate?: Nullable<Date>;
+    endDate?: Nullable<Date>;
 }
 
 export class AddIncomeInput {
@@ -53,7 +80,25 @@ export class EditUserInput {
     bio?: Nullable<string>;
 }
 
+export class Budget {
+    id: string;
+    userId: string;
+    amount: number;
+    budgetCategory: ExpenseCategory;
+    description: string;
+    limit: number;
+    overLimit: number;
+    status: BudgetStatus;
+    startDate: Date;
+    endDate: Date;
+    expenses: Expense[];
+}
+
 export abstract class IQuery {
+    abstract budget(id: string, budgetId: string): Budget | Promise<Budget>;
+
+    abstract budgets(id: string, category?: Nullable<ExpenseCategory>, status?: Nullable<BudgetStatus>): Budget[] | Promise<Budget[]>;
+
     abstract ok(): Nullable<string> | Promise<Nullable<string>>;
 
     abstract income(id: string, page?: Nullable<number>, source?: Nullable<IncomeCategory>, before?: Nullable<Date>, after?: Nullable<Date>): Income[] | Promise<Income[]>;
@@ -61,6 +106,24 @@ export abstract class IQuery {
     abstract expense(id: string, page?: Nullable<number>, category?: Nullable<ExpenseCategory>, before?: Nullable<Date>, after?: Nullable<Date>): Expense[] | Promise<Expense[]>;
 
     abstract user(id: string): User | Promise<User>;
+}
+
+export abstract class IMutation {
+    abstract createBudget(id: string, newBudget: CreateBudgetInput): Nullable<Budget> | Promise<Nullable<Budget>>;
+
+    abstract editBudget(id: string, budgetId: string, budgetData: EditBudgetInput): Budget | Promise<Budget>;
+
+    abstract deleteBudget(id: string, budgetId: string): string | Promise<string>;
+
+    abstract addIncome(id: string, newIncome: AddIncomeInput): Income | Promise<Income>;
+
+    abstract addExpense(id: string, newExpense: AddExpenseInput): Expense | Promise<Expense>;
+
+    abstract createUser(newUser: CreateUserInput): User | Promise<User>;
+
+    abstract editUser(id: string, userData: EditUserInput): User | Promise<User>;
+
+    abstract deleteUser(id: string): string | Promise<string>;
 }
 
 export class Income {
@@ -80,18 +143,6 @@ export class Expense {
     budgetId?: Nullable<string>;
     balanceAfter: number;
     createdAt: Date;
-}
-
-export abstract class IMutation {
-    abstract addIncome(id: string, newIncome: AddIncomeInput): Income | Promise<Income>;
-
-    abstract addExpense(id: string, newExpense: AddExpenseInput): Expense | Promise<Expense>;
-
-    abstract createUser(newUser: CreateUserInput): User | Promise<User>;
-
-    abstract editUser(id: string, userData: EditUserInput): User | Promise<User>;
-
-    abstract deleteUser(id: string): string | Promise<string>;
 }
 
 export class User {

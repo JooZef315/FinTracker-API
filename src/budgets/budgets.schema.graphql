@@ -1,0 +1,61 @@
+scalar Date
+
+enum BudgetStatus {
+  DRAFT
+  IN_LIMIT
+  EXCEEDED
+  ARCHIVED
+}
+
+enum ArchivedStatus {
+  ARCHIVED
+}
+
+input CreateBudgetInput {
+  limit: Float!
+  budgetCategory: ExpenseCategory!
+  description: String
+  startDate: Date
+  endDate: Date
+}
+
+input EditBudgetInput {
+  limit: Float
+  status: ArchivedStatus
+  description: String
+  startDate: Date
+  endDate: Date
+}
+
+type Budget {
+  id: ID!
+  userId: String!
+  amount: Float!
+  budgetCategory: ExpenseCategory!
+  description: String!
+  limit: Float!
+  overLimit: Float!
+  status: BudgetStatus!
+  startDate: Date!
+  endDate: Date!
+  expenses: [Expense!]!
+}
+
+type Query {
+  budget(id: String!, budgetId: String!): Budget!
+  budgets(
+    id: String!
+    category: ExpenseCategory
+    status: BudgetStatus
+  ): [Budget!]!
+}
+
+type Mutation {
+  createBudget(id: String!, newBudget: CreateBudgetInput!): Budget
+  editBudget(
+    id: String!
+    budgetId: String!
+    budgetData: EditBudgetInput!
+  ): Budget!
+  deleteBudget(id: String!, budgetId: String!): String!
+}
