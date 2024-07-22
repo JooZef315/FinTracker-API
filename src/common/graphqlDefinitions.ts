@@ -15,10 +15,6 @@ export enum BudgetStatus {
     ARCHIVED = "ARCHIVED"
 }
 
-export enum ArchivedStatus {
-    ARCHIVED = "ARCHIVED"
-}
-
 export enum IncomeCategory {
     SALARY = "SALARY",
     SAVINGS = "SAVINGS",
@@ -48,7 +44,6 @@ export class CreateBudgetInput {
 
 export class EditBudgetInput {
     limit?: Nullable<number>;
-    status?: Nullable<ArchivedStatus>;
     description?: Nullable<string>;
     startDate?: Nullable<Date>;
     endDate?: Nullable<Date>;
@@ -83,7 +78,6 @@ export class EditUserInput {
 export class Budget {
     id: string;
     userId: string;
-    amount: number;
     budgetCategory: ExpenseCategory;
     description: string;
     limit: number;
@@ -109,11 +103,13 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
-    abstract createBudget(id: string, newBudget: CreateBudgetInput): Nullable<Budget> | Promise<Nullable<Budget>>;
+    abstract createBudget(id: string, newBudget: CreateBudgetInput): Budget | Promise<Budget>;
 
     abstract editBudget(id: string, budgetId: string, budgetData: EditBudgetInput): Budget | Promise<Budget>;
 
     abstract deleteBudget(id: string, budgetId: string): string | Promise<string>;
+
+    abstract archiveBudget(id: string, budgetId: string): string | Promise<string>;
 
     abstract addIncome(id: string, newIncome: AddIncomeInput): Income | Promise<Income>;
 

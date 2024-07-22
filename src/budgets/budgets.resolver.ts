@@ -1,4 +1,11 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { BudgetsService } from './budgets.service';
 import { ParseEnumPipe, ParseUUIDPipe } from '@nestjs/common/pipes';
 import { userExistsPipe } from 'src/common/pipes/userExists.pipe';
@@ -7,12 +14,14 @@ import { BudgetStatus, ExpenseCategory } from 'src/common/enums';
 import { CreateBudgetDto } from './dto/createBudgetDto';
 import { EditBudgetDto } from './dto/editBudgetDto';
 import { budgetExistsPipe } from 'src/common/pipes/budgetExists.pipe';
+import { Budget } from 'src/common/graphqlDefinitions';
 
-@Resolver()
+@Resolver('Budget')
 export class BudgetsResolver {
   constructor(private readonly budgetsService: BudgetsService) {}
 
   @Query('budgets')
+  @UsePipes(userExistsPipe)
   getBudgets(
     @Args('id', ParseUUIDPipe) id: string,
     @Args(
@@ -68,5 +77,20 @@ export class BudgetsResolver {
     @Args('budgetId', ParseUUIDPipe) budgetId: string,
   ) {
     return this.budgetsService.deleteBudget(id, budgetId);
+  }
+
+  @Mutation('archiveBudget')
+  @UsePipes(userExistsPipe, budgetExistsPipe)
+  archiveBudget(
+    @Args('id', ParseUUIDPipe) id: string,
+    @Args('budgetId', ParseUUIDPipe) budgetId: string,
+  ) {
+    return this.budgetsService.archiveBudget(id, budgetId);
+  }
+
+  @ResolveField('expenses')
+  getBudgetExpenses(@Parent() budget: Budget) {
+    const { id } = budget;
+    return this.budgetsService.getBudgetExpenses(id);
   }
 }
