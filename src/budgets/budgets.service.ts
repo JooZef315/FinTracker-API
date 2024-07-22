@@ -24,7 +24,13 @@ export class BudgetsService {
     const userBudgets = await this.dbService.db
       .select()
       .from(budgets)
-      .where(eq(budgets.userId, id));
+      .where(
+        and(
+          eq(budgets.userId, id),
+          category && eq(budgets.budgetCategory, category),
+          status && eq(budgets.status, status),
+        ),
+      );
     return userBudgets as unknown as Budget[];
   }
 
