@@ -10,6 +10,7 @@ import { EditUserDto } from './dto/editUserDto';
 @Injectable()
 export class UsersService {
   constructor(private dbService: DbService) {}
+
   async getUser(id: string): Promise<User> {
     const user = await this.dbService.db
       .select({

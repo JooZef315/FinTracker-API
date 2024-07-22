@@ -1,0 +1,29 @@
+type BudgetsPerstatus {
+  status: BudgetStatus!
+  Number_Of_budgets: Int!
+}
+
+type SpendingPerCategory {
+  category: ExpenseCategory!
+  amount: Float!
+}
+
+type ExpensesPerMonth {
+  month: String!
+  amount: Float!
+}
+
+type Report {
+  userId: String!
+  name: String!
+  Current_Balance: Float!
+  Total_Income: Float!
+  Total_Spending: Float!
+  Spending_Per_Category: [SpendingPerCategory!]!
+  budgets_Per_status: [BudgetsPerstatus!]!
+  expenses_Per_Month: [ExpensesPerMonth!]!
+}
+
+type Query {
+  report(id: String!): Report!
+}

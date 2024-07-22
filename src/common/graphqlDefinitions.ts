@@ -93,6 +93,8 @@ export abstract class IQuery {
 
     abstract budgets(id: string, category?: Nullable<ExpenseCategory>, status?: Nullable<BudgetStatus>): Budget[] | Promise<Budget[]>;
 
+    abstract report(id: string): Report | Promise<Report>;
+
     abstract ok(): Nullable<string> | Promise<Nullable<string>>;
 
     abstract income(id: string, page?: Nullable<number>, source?: Nullable<IncomeCategory>, before?: Nullable<Date>, after?: Nullable<Date>): Income[] | Promise<Income[]>;
@@ -120,6 +122,32 @@ export abstract class IMutation {
     abstract editUser(id: string, userData: EditUserInput): User | Promise<User>;
 
     abstract deleteUser(id: string): string | Promise<string>;
+}
+
+export class BudgetsPerstatus {
+    status: BudgetStatus;
+    Number_Of_budgets: number;
+}
+
+export class SpendingPerCategory {
+    category: ExpenseCategory;
+    amount: number;
+}
+
+export class ExpensesPerMonth {
+    month: string;
+    amount: number;
+}
+
+export class Report {
+    userId: string;
+    name: string;
+    Current_Balance: number;
+    Total_Income: number;
+    Total_Spending: number;
+    Spending_Per_Category: SpendingPerCategory[];
+    budgets_Per_status: BudgetsPerstatus[];
+    expenses_Per_Month: ExpensesPerMonth[];
 }
 
 export class Income {
