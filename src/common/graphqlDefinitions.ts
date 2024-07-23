@@ -34,6 +34,11 @@ export enum ExpenseCategory {
     OTHER = "OTHER"
 }
 
+export class LoginInput {
+    email: string;
+    password: string;
+}
+
 export class CreateBudgetInput {
     limit: number;
     budgetCategory: ExpenseCategory;
@@ -75,6 +80,32 @@ export class EditUserInput {
     bio?: Nullable<string>;
 }
 
+export class Token {
+    accessToken: string;
+}
+
+export abstract class IMutation {
+    abstract login(data?: Nullable<LoginInput>): Token | Promise<Token>;
+
+    abstract createBudget(id: string, newBudget: CreateBudgetInput): Budget | Promise<Budget>;
+
+    abstract editBudget(id: string, budgetId: string, budgetData: EditBudgetInput): Budget | Promise<Budget>;
+
+    abstract deleteBudget(id: string, budgetId: string): string | Promise<string>;
+
+    abstract archiveBudget(id: string, budgetId: string): string | Promise<string>;
+
+    abstract addIncome(id: string, newIncome: AddIncomeInput): Income | Promise<Income>;
+
+    abstract addExpense(id: string, newExpense: AddExpenseInput): Expense | Promise<Expense>;
+
+    abstract createUser(newUser: CreateUserInput): User | Promise<User>;
+
+    abstract editUser(id: string, userData: EditUserInput): User | Promise<User>;
+
+    abstract deleteUser(id: string): string | Promise<string>;
+}
+
 export class Budget {
     id: string;
     userId: string;
@@ -102,26 +133,6 @@ export abstract class IQuery {
     abstract expense(id: string, page?: Nullable<number>, category?: Nullable<ExpenseCategory>, before?: Nullable<Date>, after?: Nullable<Date>): Expense[] | Promise<Expense[]>;
 
     abstract user(id: string): User | Promise<User>;
-}
-
-export abstract class IMutation {
-    abstract createBudget(id: string, newBudget: CreateBudgetInput): Budget | Promise<Budget>;
-
-    abstract editBudget(id: string, budgetId: string, budgetData: EditBudgetInput): Budget | Promise<Budget>;
-
-    abstract deleteBudget(id: string, budgetId: string): string | Promise<string>;
-
-    abstract archiveBudget(id: string, budgetId: string): string | Promise<string>;
-
-    abstract addIncome(id: string, newIncome: AddIncomeInput): Income | Promise<Income>;
-
-    abstract addExpense(id: string, newExpense: AddExpenseInput): Expense | Promise<Expense>;
-
-    abstract createUser(newUser: CreateUserInput): User | Promise<User>;
-
-    abstract editUser(id: string, userData: EditUserInput): User | Promise<User>;
-
-    abstract deleteUser(id: string): string | Promise<string>;
 }
 
 export class BudgetsPerstatus {
