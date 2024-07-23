@@ -25,5 +25,5 @@ type Report {
 }
 
 type Query {
-  report(id: String!): Report!
+  report: Report!
 }

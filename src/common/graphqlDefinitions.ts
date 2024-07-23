@@ -87,23 +87,23 @@ export class Token {
 export abstract class IMutation {
     abstract login(data?: Nullable<LoginInput>): Token | Promise<Token>;
 
-    abstract createBudget(id: string, newBudget: CreateBudgetInput): Budget | Promise<Budget>;
+    abstract createBudget(newBudget: CreateBudgetInput): Budget | Promise<Budget>;
 
-    abstract editBudget(id: string, budgetId: string, budgetData: EditBudgetInput): Budget | Promise<Budget>;
+    abstract editBudget(budgetId: string, budgetData: EditBudgetInput): Budget | Promise<Budget>;
 
-    abstract deleteBudget(id: string, budgetId: string): string | Promise<string>;
+    abstract deleteBudget(budgetId: string): string | Promise<string>;
 
-    abstract archiveBudget(id: string, budgetId: string): string | Promise<string>;
+    abstract archiveBudget(budgetId: string): string | Promise<string>;
 
-    abstract addIncome(id: string, newIncome: AddIncomeInput): Income | Promise<Income>;
+    abstract addIncome(newIncome: AddIncomeInput): Income | Promise<Income>;
 
-    abstract addExpense(id: string, newExpense: AddExpenseInput): Expense | Promise<Expense>;
+    abstract addExpense(newExpense: AddExpenseInput): Expense | Promise<Expense>;
 
     abstract createUser(newUser: CreateUserInput): User | Promise<User>;
 
-    abstract editUser(id: string, userData: EditUserInput): User | Promise<User>;
+    abstract editUser(userData: EditUserInput): User | Promise<User>;
 
-    abstract deleteUser(id: string): string | Promise<string>;
+    abstract deleteUser(): string | Promise<string>;
 }
 
 export class Budget {
@@ -120,19 +120,19 @@ export class Budget {
 }
 
 export abstract class IQuery {
-    abstract budget(id: string, budgetId: string): Budget | Promise<Budget>;
+    abstract budget(budgetId: string): Budget | Promise<Budget>;
 
-    abstract budgets(id: string, category?: Nullable<ExpenseCategory>, status?: Nullable<BudgetStatus>): Budget[] | Promise<Budget[]>;
+    abstract budgets(category?: Nullable<ExpenseCategory>, status?: Nullable<BudgetStatus>): Budget[] | Promise<Budget[]>;
 
-    abstract report(id: string): Report | Promise<Report>;
+    abstract report(): Report | Promise<Report>;
 
     abstract ok(): Nullable<string> | Promise<Nullable<string>>;
 
-    abstract income(id: string, page?: Nullable<number>, source?: Nullable<IncomeCategory>, before?: Nullable<Date>, after?: Nullable<Date>): Income[] | Promise<Income[]>;
+    abstract income(page?: Nullable<number>, source?: Nullable<IncomeCategory>, before?: Nullable<Date>, after?: Nullable<Date>): Income[] | Promise<Income[]>;
 
-    abstract expense(id: string, page?: Nullable<number>, category?: Nullable<ExpenseCategory>, before?: Nullable<Date>, after?: Nullable<Date>): Expense[] | Promise<Expense[]>;
+    abstract expense(page?: Nullable<number>, category?: Nullable<ExpenseCategory>, before?: Nullable<Date>, after?: Nullable<Date>): Expense[] | Promise<Expense[]>;
 
-    abstract user(id: string): User | Promise<User>;
+    abstract user(): User | Promise<User>;
 }
 
 export class BudgetsPerstatus {

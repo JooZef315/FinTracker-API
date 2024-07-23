@@ -3,9 +3,14 @@ import { DbService } from 'src/db/db.service';
 import { AddIncomeDto } from './dto/addIncomeDto';
 import { AddExpenseDto } from './dto/AddExpenseDto';
 import { Expense, Income } from 'src/common/graphqlDefinitions';
-import { expenses, incomes, users } from 'drizzle/schema';
-import { and, count, desc, eq, gt, lt, sql } from 'drizzle-orm';
-import { ExpenseCategory, IncomeCategory } from 'src/common/enums';
+import { budgets, expenses, incomes, users } from 'drizzle/schema';
+import { and, count, desc, eq, gt, gte, lt, lte, sql, sum } from 'drizzle-orm';
+import {
+  BudgetStatus,
+  ExpenseCategory,
+  IncomeCategory,
+} from 'src/common/enums';
+import { getDate } from 'src/common/utils/dateUtils';
 
 @Injectable()
 export class TransactionsService {
@@ -164,14 +169,60 @@ export class TransactionsService {
       })
       .where(eq(users.id, id));
 
+    // add to a proper budget
+    const budget = await this.dbService.db
+      .select({
+        id: budgets.id,
+        limit: budgets.limit,
+        overLimit: budgets.overLimit,
+      })
+      .from(budgets)
+      .where(
+        and(
+          eq(budgets.userId, id),
+          eq(budgets.budgetCategory, addExpenseDto.category),
+          lte(budgets.startDate, getDate()),
+          gte(budgets.endDate, getDate()),
+        ),
+      );
+
     const expenseToAdd = await this.dbService.db
       .insert(expenses)
       .values({
         userId: id,
         balanceAfter: user[0].balance - addExpenseDto.amount,
         ...addExpenseDto,
+        budgetId: budget.length ? budget[0].id : null,
       })
       .returning();
+
+    //upadte corresponding budget
+    if (budget.length) {
+      //get new amount spent in the updated budget
+      const expensesaAmount = await this.dbService.db
+        .select({
+          amount: sum(expenses.amount),
+        })
+        .from(expenses)
+        .where(eq(expenses.budgetId, budget[0].id));
+
+      const amount = parseFloat(expensesaAmount[0].amount);
+
+      //get new Over Limit in the updated budget
+      const newOverLimit =
+        budget[0].limit < amount ? amount - budget[0].limit : 0;
+
+      const newStatus =
+        newOverLimit == 0 ? BudgetStatus.IN_LIMIT : BudgetStatus.EXCEEDED;
+
+      await this.dbService.db
+        .update(budgets)
+        .set({
+          overLimit: newOverLimit,
+          status: newStatus,
+        })
+        .where(eq(budgets.id, budget[0].id));
+    }
 
     return expenseToAdd[0] as unknown as Expense;
   }

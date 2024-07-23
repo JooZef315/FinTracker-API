@@ -1,16 +1,19 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/createUserDto';
-import { ParseUUIDPipe, UsePipes } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { EditUserDto } from './dto/editUserDto';
-import { userExistsPipe } from 'src/common/pipes/userExists.pipe';
+import { JwtGuard } from 'src/common/guards/jwt.guard';
+import { CurrentUser } from 'src/common/decorators/role.decorator';
 
 @Resolver()
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(JwtGuard)
   @Query('user')
-  getUser(@Args('id', ParseUUIDPipe) id: string) {
+  getUser(@CurrentUser() user: JwtPayload) {
+    const id = user.userId;
     return this.usersService.getUser(id);
   }
 
@@ -19,18 +22,20 @@ export class UsersResolver {
     return this.usersService.createUser(createUserDto);
   }
 
+  @UseGuards(JwtGuard)
   @Mutation('editUser')
-  @UsePipes(userExistsPipe)
   editUser(
-    @Args('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: JwtPayload,
     @Args('userData') editUserDto: EditUserDto,
   ) {
+    const id = user.userId;
     return this.usersService.editUser(id, editUserDto);
   }
 
+  @UseGuards(JwtGuard)
   @Mutation('deleteUser')
-  @UsePipes(userExistsPipe)
-  deleteUser(@Args('id', ParseUUIDPipe) id: string) {
+  deleteUser(@CurrentUser() user: JwtPayload) {
+    const id = user.userId;
     return this.usersService.deleteUser(id);
   }
 }

@@ -1,4 +1,4 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Query, Resolver } from '@nestjs/graphql';
 import { ReportsService } from './reports.service';
 import { UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/common/guards/jwt.guard';
@@ -10,8 +10,7 @@ export class ReportsResolver {
 
   @UseGuards(JwtGuard)
   @Query('report')
-  getUserReport(@Args('id') id: string, @CurrentUser() user: JwtPayload) {
-    console.log(user);
+  getUserReport(@CurrentUser() user: JwtPayload) {
     return this.reportsService.getUserReport(user.userId);
   }
 }

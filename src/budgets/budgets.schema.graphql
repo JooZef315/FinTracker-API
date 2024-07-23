@@ -36,21 +36,13 @@ type Budget {
 }
 
 type Query {
-  budget(id: String!, budgetId: String!): Budget!
-  budgets(
-    id: String!
-    category: ExpenseCategory
-    status: BudgetStatus
-  ): [Budget!]!
+  budget(budgetId: String!): Budget!
+  budgets(category: ExpenseCategory, status: BudgetStatus): [Budget!]!
 }
 
 type Mutation {
-  createBudget(id: String!, newBudget: CreateBudgetInput!): Budget!
-  editBudget(
-    id: String!
-    budgetId: String!
-    budgetData: EditBudgetInput!
-  ): Budget!
-  deleteBudget(id: String!, budgetId: String!): String!
-  archiveBudget(id: String!, budgetId: String!): String!
+  createBudget(newBudget: CreateBudgetInput!): Budget!
+  editBudget(budgetId: String!, budgetData: EditBudgetInput!): Budget!
+  deleteBudget(budgetId: String!): String!
+  archiveBudget(budgetId: String!): String!
 }

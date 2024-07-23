@@ -51,14 +51,12 @@ type Expense {
 
 type Query {
   income(
-    id: String!
     page: Int
     source: IncomeCategory
     before: Date
     after: Date
   ): [Income!]!
   expense(
-    id: String!
     page: Int
     category: ExpenseCategory
     before: Date
@@ -67,6 +65,6 @@ type Query {
 }
 
 type Mutation {
-  addIncome(id: String!, newIncome: AddIncomeInput!): Income!
-  addExpense(id: String!, newExpense: AddExpenseInput!): Expense!
+  addIncome(newIncome: AddIncomeInput!): Income!
+  addExpense(newExpense: AddExpenseInput!): Expense!
 }

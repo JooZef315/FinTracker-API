@@ -22,11 +22,11 @@ type User {
 }
 
 type Query {
-  user(id: String!): User!
+  user: User!
 }
 
 type Mutation {
   createUser(newUser: CreateUserInput!): User!
-  editUser(id: String!, userData: EditUserInput!): User!
-  deleteUser(id: String!): String!
+  editUser(userData: EditUserInput!): User!
+  deleteUser: String!
 }

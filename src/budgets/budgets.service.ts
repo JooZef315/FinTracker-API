@@ -149,7 +149,7 @@ export class BudgetsService {
       );
     }
 
-    //Add from budget
+    //Add to budget
     await this.dbService.db
       .update(expenses)
       .set({
@@ -219,7 +219,7 @@ export class BudgetsService {
         startDate: editBudgetDto.startDate && String(editBudgetDto.startDate),
         endDate: editBudgetDto.endDate && String(editBudgetDto.endDate),
       })
-      .where(and(eq(budgets.id, budgetId), eq(budgets.userId, id)))
+      .where(eq(budgets.id, budgetId))
       .returning();
 
     return updatedBudget[0] as unknown as Budget;

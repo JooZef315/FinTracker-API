@@ -1,6 +1,11 @@
 /* eslint-disable prettier/prettier */
 import * as moment from 'moment';
 
+export const getDate = () => {
+  const currentDate = moment().format('YYYY-MM-DD');
+  return currentDate;
+};
+
 export const getNextMonth = () => {
   const currentDate = new Date();
   const nextMonth = currentDate.setMonth(currentDate.getMonth() + 1);

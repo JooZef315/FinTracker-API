@@ -4,13 +4,13 @@ import {
   DefaultValuePipe,
   ParseEnumPipe,
   ParseIntPipe,
-  ParseUUIDPipe,
-  UsePipes,
+  UseGuards,
 } from '@nestjs/common';
-import { userExistsPipe } from 'src/common/pipes/userExists.pipe';
 import { AddIncomeDto } from './dto/addIncomeDto';
 import { AddExpenseDto } from './dto/AddExpenseDto';
 import { ExpenseCategory, IncomeCategory } from 'src/common/enums';
+import { JwtGuard } from 'src/common/guards/jwt.guard';
+import { CurrentUser } from 'src/common/decorators/role.decorator';
 
 @Resolver()
 export class TransactionsResolver {
@@ -19,10 +19,10 @@ export class TransactionsResolver {
     this.ITEMS_PER_PAGE = 4;
   }
 
+  @UseGuards(JwtGuard)
   @Query('income')
-  @UsePipes(userExistsPipe)
   getIncome(
-    @Args('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: JwtPayload,
     @Args('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Args(
       'source',
@@ -34,6 +34,7 @@ export class TransactionsResolver {
     @Args('before') before: string,
     @Args('after') after: string,
   ) {
+    const id = user.userId;
     return this.transactionsService.getIncome(
       id,
       this.ITEMS_PER_PAGE,
@@ -44,10 +45,10 @@ export class TransactionsResolver {
     );
   }
 
+  @UseGuards(JwtGuard)
   @Query('expense')
-  @UsePipes(userExistsPipe)
   getExpense(
-    @Args('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: JwtPayload,
     @Args('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Args(
       'category',
@@ -59,6 +60,7 @@ export class TransactionsResolver {
     @Args('before') before: string,
     @Args('after') after: string,
   ) {
+    const id = user.userId;
     return this.transactionsService.getExpense(
       id,
       this.ITEMS_PER_PAGE,
@@ -69,21 +71,23 @@ export class TransactionsResolver {
     );
   }
 
+  @UseGuards(JwtGuard)
   @Mutation('addIncome')
-  @UsePipes(userExistsPipe)
   addIncome(
-    @Args('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: JwtPayload,
     @Args('newIncome') addIncomeDto: AddIncomeDto,
   ) {
+    const id = user.userId;
     return this.transactionsService.addIncome(id, addIncomeDto);
   }
 
+  @UseGuards(JwtGuard)
   @Mutation('addExpense')
-  @UsePipes(userExistsPipe)
   addExpense(
-    @Args('id', ParseUUIDPipe) id: string,
+    @CurrentUser() user: JwtPayload,
     @Args('newExpense') addExpenseDto: AddExpenseDto,
   ) {
+    const id = user.userId;
     return this.transactionsService.addExpense(id, addExpenseDto);
   }
 }
